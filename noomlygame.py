@@ -10,6 +10,9 @@ MAX_BASE = 16
 
 DIGITS = (digits+letters)[:MAX_BASE]
 
+class ForbiddenCallError(Exception):
+    pass
+
 def is_in_base(str, base):
     for c in str:
         if c not in DIGITS or c >= DIGITS[base]:
@@ -80,6 +83,8 @@ class NoomlyGame:
             raise ValueError("guess string size should be {}".format(self.size))
         if not is_in_base(guess, base):
             raise ValueError("guess {} should represent a number in base {}".format(guess, base))
+        if self.solved:
+            raise ForbiddenCallError("game already solved, so no more guessing allowed")
 
         nc = 0
         dic_g = {}
