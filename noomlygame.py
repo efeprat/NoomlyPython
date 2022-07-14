@@ -34,6 +34,17 @@ class GuessHints:
     def get_soldir(self):
         return self.soldir
 
+    def __str__(self):
+        nc = self.ncorrect
+        nm = self.nmissp
+        if self.soldir == SOL_LOWER:
+            comp_op = "<"
+        elif self.soldir == SOL_EQUAL:
+            comp_op = "="
+        else:
+            comp_op = ">"
+        return "NC: {}; NM: {}; S {} G".format(nc, nm, comp_op)
+
 class NoomlyGame:
     def __init__(self, solution, base=10):
 
@@ -55,10 +66,11 @@ class NoomlyGame:
         self.solved = False
 
     def get_solution(self):
+
         if not self.solved:
-            return None
-        else:
-            return self.solution
+            raise ForbiddenCallError("game still unsolved, so solution is a secret")
+
+        return self.solution
 
     def get_size(self):
         return self.size
@@ -81,8 +93,8 @@ class NoomlyGame:
             raise TypeError("guess {} should be a string".format(repr(solution)))
         if len(guess) != self.size:
             raise ValueError("guess string size should be {}".format(self.size))
-        if not is_in_base(guess, base):
-            raise ValueError("guess {} should represent a number in base {}".format(guess, base))
+        if not is_in_base(guess, self.base):
+            raise ValueError("guess {} should represent a number in base {}".format(guess, self.base))
         if self.solved:
             raise ForbiddenCallError("game already solved, so no more guessing allowed")
 
@@ -105,7 +117,7 @@ class NoomlyGame:
             for d in dic_g:
                 if d in dic_s:
                     nm += min(dic_g[d], dic_s[d])
-            soldir = SOL_LOWER if self.solution < guess else: SOL_GREATER
+            soldir = SOL_LOWER if self.solution < guess else SOL_GREATER
         response = GuessHints(nc, nm, soldir)
-        self.history.append(response)
+        self.history.append((guess, response))
         return response
