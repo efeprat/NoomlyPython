@@ -43,21 +43,21 @@ class GuessHints:
             comp_op = "="
         else:
             comp_op = ">"
-        return "NC: {}; NM: {}; S {} G".format(nc, nm, comp_op)
+        return f"NC: {nc}; NM: {nm}; S {comp_op} G"
 
 class NoomlyGame:
     def __init__(self, solution, base=10):
 
         if type(solution) is not str:
-            raise TypeError("solution {} should be a string".format(repr(solution)))
+            raise TypeError(f"solution {repr(solution)} should be a string")
         if len(solution) == 0:
             raise ValueError("solution string shouldn't be empty")
         if type(base) is not int:
-            raise TypeError("base {} should be an integer".format(repr(base)))
+            raise TypeError(f"base {repr(base)} should be an integer")
         if not MIN_BASE <= base <= MAX_BASE:
-            raise ValueError("base {} should be between {} and {}".format(base, MIN_BASE, MAX_BASE))
+            raise ValueError(f"base {base} should be between {MIN_BASE} and {MAX_BASE}")
         if not is_in_base(solution, base):
-            raise ValueError("solution {} should represent a number in base {}".format(solution, base))
+            raise ValueError(f"solution {solution} should represent a number in base {base}")
 
         self.solution = solution
         self.size = len(solution)
@@ -90,11 +90,11 @@ class NoomlyGame:
     def process_guess(self, guess): 
 
         if type(guess) is not str:
-            raise TypeError("guess {} should be a string".format(repr(solution)))
+            raise TypeError(f"guess {repr(solution)} should be a string")
         if len(guess) != self.size:
-            raise ValueError("guess string size should be {}".format(self.size))
+            raise ValueError(f"guess string size should be {self.size}")
         if not is_in_base(guess, self.base):
-            raise ValueError("guess {} should represent a number in base {}".format(guess, self.base))
+            raise ValueError(f"guess {guess} should represent a number in base {self.base}")
         if self.solved:
             raise ForbiddenCallError("game already solved, so no more guessing allowed")
 

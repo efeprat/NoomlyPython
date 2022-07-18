@@ -24,11 +24,11 @@ while not game.is_solved():
     guess_ok = False
     while not guess_ok:
         try:
-            guess = input("Guess #{:02d}> ".format(game.get_nguesses()+1))
+            guess = input(f"Guess #{game.get_nguesses()+1:02d}> ")
             response = game.process_guess(guess)
             guess_ok = True
         except ValueError:
             print("INVALID GUESS VALUE!!! Please retry...")
-    print(11*" "+"{} --- {}".format(guess, response))
+    print(11*" "+f"{guess} --- {response}")
 
 print("WELL DONE!!! Bye!")
