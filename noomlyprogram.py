@@ -31,4 +31,9 @@ while not game.is_solved():
             print("INVALID GUESS VALUE!!! Please retry...")
     print(11*" "+f"{guess} --- {response}")
 
-print("WELL DONE!!! Bye!")
+total_guesses = game.get_nguesses()
+guesses_word = "guess" + ("" if total_guesses == 1 else "es")
+    
+print("WELL DONE!!!")
+print(f"Number found in {total_guesses} {guesses_word}")
+print("Bye!")
