@@ -24,16 +24,16 @@ while not game.is_solved():
     guess_ok = False
     while not guess_ok:
         try:
-            guess = input(f"Guess #{game.get_nguesses()+1:02d}> ")
+            guess = input(f"Guess #{game.get_nguesses() + 1:02d}> ")
             response = game.process_guess(guess)
             guess_ok = True
         except ValueError:
             print("INVALID GUESS VALUE!!! Please retry...")
-    print(11*" "+f"{guess} --- {response}")
+    print(11 * " " + f"{guess} --- {response}")
 
 total_guesses = game.get_nguesses()
 guesses_word = "guess" + ("" if total_guesses == 1 else "es")
-    
+
 print("WELL DONE!!!")
 print(f"Number found in {total_guesses} {guesses_word}")
 print("Bye!")

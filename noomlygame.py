@@ -1,4 +1,5 @@
 from string import digits, ascii_lowercase as letters
+
 # Just lowercase letters to be allowed as digits
 
 SOL_LOWER = -1
@@ -8,16 +9,19 @@ SOL_GREATER = +1
 MIN_BASE = 2
 MAX_BASE = 16
 
-DIGITS = (digits+letters)[:MAX_BASE]
+DIGITS = (digits + letters)[:MAX_BASE]
+
 
 class ForbiddenCallError(Exception):
     pass
+
 
 def is_in_base(str, base):
     for c in str:
         if c not in DIGITS or c >= DIGITS[base]:
             return False
     return True
+
 
 class GuessHints:
     def __init__(self, ncorrect, nmissp, soldir):
@@ -44,6 +48,7 @@ class GuessHints:
         else:
             comp_op = ">"
         return f"NC: {nc}; NM: {nm}; S {comp_op} G"
+
 
 class NoomlyGame:
     def __init__(self, solution, base=10):
@@ -87,7 +92,7 @@ class NoomlyGame:
     def is_solved(self):
         return self.solved
 
-    def process_guess(self, guess): 
+    def process_guess(self, guess):
 
         if type(guess) is not str:
             raise TypeError(f"guess {repr(solution)} should be a string")
