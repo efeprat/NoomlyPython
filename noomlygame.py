@@ -1,6 +1,5 @@
-from string import digits, ascii_lowercase as letters
-
 # Just lowercase letters to be allowed as digits
+from string import digits, ascii_lowercase as letters
 
 SOL_LOWER = -1
 SOL_EQUAL = 0
