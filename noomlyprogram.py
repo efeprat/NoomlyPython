@@ -1,15 +1,23 @@
+"""Noomly with a text interface.
+
+This program provides an interface for playing Noomly
+in a text console.  It's a text-only view for the model
+in the noomlygame module.  You can play the original
+Noomly in https://noomly.surge.sh/.
+"""
+
 import random
 from datetime import date
 from string import digits
 
 from noomlygame import *
 
-HARD = False
+HARD = False  # In hard mode, solution may contain repeated digits
 SIZE = 4
 
 today_string = date.today().isoformat()
 
-random.seed(today_string)
+random.seed(today_string)  # Just one different challenge each day
 
 if HARD:
     sample = random.choices(digits, k=SIZE)

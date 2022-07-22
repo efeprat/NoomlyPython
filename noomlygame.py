@@ -1,11 +1,17 @@
+"""A model for the Noomly game.
+
+This module provides a model for the Noomly game.  You can play
+the original Noomly in https://noomly.surge.sh/.
+"""
+
 # Just lowercase letters to be allowed as digits
 from string import digits, ascii_lowercase as letters
 
 import re
 
-SOL_LOWER = -1
-SOL_EQUAL = 0
-SOL_GREATER = +1
+SOL_LOWER = -1    # Solution < guess
+SOL_EQUAL = 0     # Solution = guess
+SOL_GREATER = +1  # Solution > guess
 
 MIN_BASE = 2
 MAX_BASE = 16
@@ -18,28 +24,29 @@ class ForbiddenCallError(Exception):
 
 
 def is_in_base(str, base):
+    # Does the string represent a number in this base?
     in_base_re = f"[{DIGITS[:base]}]+"
     return re.fullmatch(in_base_re, str) != None
 
 
 class GuessHints:
-    def __init__(self, ncorrect, nmissp, soldir):
-        self.ncorrect = ncorrect
-        self.nmissp = nmissp
-        self.soldir = soldir
+    def __init__(self, ncorrect, nmisp, soldir):
+        self.ncorrect = ncorrect  # Number of correct digits
+        self.nmisp = nmisp        # Number of misplaced digits
+        self.soldir = soldir      # Solution direction wrt the guess
 
     def get_ncorrect(self):
         return self.ncorrect
 
-    def get_nmissp(self):
-        return self.nmissp
+    def get_nmisp(self):
+        return self.nmisp
 
     def get_soldir(self):
         return self.soldir
 
     def __str__(self):
         nc = self.ncorrect
-        nm = self.nmissp
+        nm = self.nmisp
         if self.soldir == SOL_LOWER:
             comp_op = "<"
         elif self.soldir == SOL_EQUAL:
@@ -50,6 +57,7 @@ class GuessHints:
 
 
 class NoomlyGame:
+    # A model for just one Noomly challenge
     def __init__(self, solution, base=10):
 
         if type(solution) is not str:
@@ -102,6 +110,7 @@ class NoomlyGame:
         if self.solved:
             raise ForbiddenCallError("game already solved, so no more guessing allowed")
 
+        # Counting correct digits (in their correct places)
         nc = 0
         dic_g = {}
         dic_s = {}
@@ -114,6 +123,8 @@ class NoomlyGame:
                 dic_g[gd] = dic_g.get(gd, 0) + 1
                 dic_s[sd] = dic_s.get(sd, 0) + 1
         self.solved = nc == self.size
+
+        # Counting misplaced digits
         nm = 0
         if self.solved:
             soldir = SOL_EQUAL
@@ -122,6 +133,7 @@ class NoomlyGame:
                 if d in dic_s:
                     nm += min(dic_g[d], dic_s[d])
             soldir = SOL_LOWER if self.solution < guess else SOL_GREATER
+
         response = GuessHints(nc, nm, soldir)
         self.history.append((guess, response))
         return response
