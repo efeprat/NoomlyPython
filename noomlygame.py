@@ -1,6 +1,8 @@
 # Just lowercase letters to be allowed as digits
 from string import digits, ascii_lowercase as letters
 
+import re
+
 SOL_LOWER = -1
 SOL_EQUAL = 0
 SOL_GREATER = +1
@@ -16,10 +18,8 @@ class ForbiddenCallError(Exception):
 
 
 def is_in_base(str, base):
-    for c in str:
-        if c not in DIGITS or c >= DIGITS[base]:
-            return False
-    return True
+    in_base_re = f"[{DIGITS[:base]}]+"
+    return re.fullmatch(in_base_re, str) != None
 
 
 class GuessHints:
